@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 96" role="img" aria-labelledby="title">
+  <title id="title">R.Oil</title>
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="0.15" y2="1">
+      <stop offset="0" stop-color="#f8f8f5"/>
+      <stop offset=".24" stop-color="#c5c9cc"/>
+      <stop offset=".5" stop-color="#727b83"/>
+      <stop offset=".76" stop-color="#e0e3e3"/>
+      <stop offset="1" stop-color="#858d92"/>
+    </linearGradient>
+    <linearGradient id="gold" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#fff3a0"/>
+      <stop offset=".38" stop-color="#ffd52e"/>
+      <stop offset=".72" stop-color="#e8a900"/>
+      <stop offset="1" stop-color="#fff0a0"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#fff" stop-opacity=".85"/>
+      <stop offset=".48" stop-color="#fff" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-.15" y="-.2" width="1.4" height="1.5" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.2"/>
+      <feOffset dy="2"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope=".38"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)" stroke="#171a1d" stroke-linejoin="round" paint-order="stroke fill">
+    <text x="5" y="76" fill="url(#steel)" stroke-width="8" font-family="Arial Black, Arial, sans-serif" font-size="82" font-style="italic" font-weight="900" letter-spacing="-8">R</text>
+    <path d="M119 10c-5 13-27 36-27 53a27 27 0 0 0 54 0c0-17-22-40-27-53Z" fill="url(#gold)" stroke-width="6"/>
+    <path d="M119 23c-5 12-17 26-17 38a17 17 0 0 0 34 0c0-12-12-26-17-38Z" fill="url(#shine)" stroke="none"/>
+    <path d="M113 56c-2 5-4 9-4 14" fill="none" stroke="#fff4b4" stroke-linecap="round" stroke-width="3" opacity=".8"/>
+    <text x="151" y="76" fill="url(#steel)" stroke-width="8" font-family="Arial Black, Arial, sans-serif" font-size="82" font-style="italic" font-weight="900" letter-spacing="-7">IL</text>
+  </g>
+</svg>

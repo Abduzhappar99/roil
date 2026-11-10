@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c81920">
+  <title>Клиенты и напоминания — R.Oil</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="admin-body">
+  <header class="site-header">
+    <nav class="site-nav admin-wrap" aria-label="Основная навигация">
+      <a class="brand" href="./index.html" aria-label="R.Oil — на главную"><img src="./images/logo.svg" alt="R.Oil"></a>
+      <div class="nav-links">
+        <a href="./index.html">Главная</a>
+        <a href="./about.html">О нас</a>
+        <a href="./contact.html">Контакты</a>
+        <a class="nav-map" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Открыть в 2ГИС ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="admin-main admin-wrap">
+    <h1>Клиенты и напоминания</h1>
+    <p class="intro">Список клиентов и плановых дат следующей замены масла.</p>
+
+    <aside class="notice">
+      <strong>Локально на этом устройстве</strong>
+      <p>Данные хранятся только в браузере на этом компьютере — они не защищены паролем и не синхронизируются. Экспортируйте резервную копию. WhatsApp-сообщение нужно отправить вручную; сайт не рассылает его автоматически. Добавляйте клиентов только с их согласием на напоминания.</p>
+    </aside>
+
+    <div id="storage-error" class="error" role="alert" hidden></div>
+
+    <div class="toolbar">
+      <button class="button" id="export-button" type="button">Скачать резервную копию</button>
+      <button class="button" id="import-button" type="button">Восстановить из копии</button>
+      <input id="import-file" type="file" accept="application/json,.json" hidden>
+    </div>
+
+    <section class="panel" aria-labelledby="form-title">
+      <h2 id="form-title">Добавить клиента</h2>
+      <form id="client-form">
+        <input id="client-id" type="hidden">
+        <div class="form-grid">
+          <label>
+            Имя клиента
+            <input id="client-name" type="text" maxlength="100" autocomplete="name" required>
+          </label>
+          <label>
+            Телефон WhatsApp
+            <input id="client-phone" type="tel" maxlength="30" autocomplete="tel" placeholder="+7 700 123 45 67" required>
+          </label>
+          <label>
+            Автомобиль
+            <input id="client-car" type="text" maxlength="100" placeholder="Например, Toyota Camry" required>
+          </label>
+          <label>
+            Плановая дата следующей замены
+            <input id="client-due" type="date" required>
+          </label>
+        </div>
+        <label class="consent">
+          <input id="client-consent" type="checkbox" required>
+          <span>Клиент согласился получать напоминания о замене масла в WhatsApp.</span>
+        </label>
+        <div class="form-actions">
+          <button class="button button-primary" id="save-button" type="submit">Сохранить клиента</button>
+          <button class="button" id="cancel-edit" type="button" hidden>Отменить редактирование</button>
+        </div>
+      </form>
+    </section>
+
+    <section aria-labelledby="reminders-title">
+      <div class="section-title">
+        <h2 id="reminders-title">К отправке</h2>
+        <span class="count" id="reminder-count"></span>
+      </div>
+      <div class="cards" id="reminder-list"></div>
+      <p class="hint">Показываются просроченные даты и замены, запланированные на ближайшие 30 дней.</p>
+    </section>
+
+    <section aria-labelledby="clients-title">
+      <div class="section-title">
+        <h2 id="clients-title">Все клиенты</h2>
+        <span class="count" id="client-count"></span>
+      </div>
+      <div class="cards" id="client-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-row admin-wrap">
+      <div class="footer-brand">
+        <a class="brand" href="./index.html" aria-label="R.Oil — на главную"><img src="./images/logo.svg" alt="R.Oil"></a>
+        <span>© R.Oil · Пункт замены масла · Астана</span>
+      </div>
+      <div class="footer-links">
+        <a href="./contact.html">Контакты</a>
+        <a href="./clients.html">Клиентская база</a>
+        <a href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">2ГИС ↗</a>
+        <a href="https://www.instagram.com/explore/search/keyword/?q=R.Oil%20Astana">Найти в Instagram ↗</a>
+        <a href="https://vk.com/search?c[section]=communities&amp;c[q]=R.Oil%20Astana">Найти ВКонтакте ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "roil-client-reminders-v1";
+      const MAP_URL = "https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81";
+      const form = document.getElementById("client-form");
+      const storageError = document.getElementById("storage-error");
+      const importFile = document.getElementById("import-file");
+      let clients = [];
+      let storageReady = true;
+
+      function showStorageError(message) {
+        storageError.textContent = message;
+        storageError.hidden = false;
+      }
+
+      function readClients() {
+        try {
+          const value = localStorage.getItem(STORAGE_KEY);
+          if (!value) return [];
+          const parsed = JSON.parse(value);
+          if (!Array.isArray(parsed)) throw new Error("Неверный формат локальной базы.");
+          return parsed;
+        } catch (error) {
+          storageReady = false;
+          showStorageError("Не удалось прочитать базу в этом браузере. " + error.message);
+          return [];
+        }
+      }
+
+      function saveClients() {
+        if (!storageReady) return false;
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
+          storageError.hidden = true;
+          return true;
+        } catch (error) {
+          showStorageError("Не удалось сохранить данные в браузере. Освободите место и скачайте резервную копию, если данные ещё доступны. " + error.message);
+          return false;
+        }
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[character]);
+      }
+
+      function localToday() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+      }
+
+      function daysUntil(dateString) {
+        const today = new Date(`${localToday()}T12:00:00`);
+        const due = new Date(`${dateString}T12:00:00`);
+        return Math.round((due - today) / 86400000);
+      }
+
+      function formatDate(dateString) {
+        const date = new Date(`${dateString}T12:00:00`);
+        return new Intl.DateTimeFormat("ru-RU", { day: "numeric", month: "long", year: "numeric" }).format(date);
+      }
+
+      function whatsappNumber(phone) {
+        let digits = phone.replace(/\D/g, "");
+        if (digits.length === 11 && digits.startsWith("8")) digits = "7" + digits.slice(1);
+        if (digits.length === 10) digits = "7" + digits;
+        return digits;
+      }
+
+      function reminderMessage(client) {
+        return `Здравствуйте, ${client.name}! По нашим данным, плановая дата следующей замены масла для автомобиля ${client.car} — ${formatDate(client.dueDate)}. Будем рады видеть вас в R.Oil. Карта: ${MAP_URL}`;
+      }
+
+      function dueLabel(client) {
+        const days = daysUntil(client.dueDate);
+        if (days < 0) return { text: `Просрочено на ${Math.abs(days)} дн. · плановая дата ${formatDate(client.dueDate)}`, overdue: true };
+        if (days === 0) return { text: `Плановая дата — сегодня, ${formatDate(client.dueDate)}`, overdue: false };
+        return { text: `Плановая дата через ${days} дн. · ${formatDate(client.dueDate)}`, overdue: false };
+      }
+
+      function renderCard(client, isReminder) {
+        const due = dueLabel(client);
+        const reminderLink = `https://wa.me/${whatsappNumber(client.phone)}?text=${encodeURIComponent(reminderMessage(client))}`;
+        const reminderButton = isReminder
+          ? `<a class="button button-primary button-small" href="${reminderLink}" target="_blank" rel="noopener noreferrer">Открыть сообщение в WhatsApp</a><button class="button button-small" type="button" data-action="sent" data-id="${escapeHtml(client.id)}">Отметить отправленным</button>`
+          : "";
+
+        return `<article class="card">
+          <div class="card-top">
+            <div>
+              <h3>${escapeHtml(client.name)}</h3>
+              <div class="details"><span>${escapeHtml(client.phone)}</span><span>${escapeHtml(client.car)}</span></div>
+            </div>
+            <div class="due${due.overdue ? " overdue" : ""}">${due.text}</div>
+          </div>
+          <div class="card-actions">
+            ${reminderButton}
+            <button class="button button-small" type="button" data-action="edit" data-id="${escapeHtml(client.id)}">Изменить</button>
+            <button class="button button-danger button-small" type="button" data-action="delete" data-id="${escapeHtml(client.id)}">Удалить</button>
+          </div>
+        </article>`;
+      }
+
+      function render() {
+        const today = localToday();
+        const cutoff = new Date(`${today}T12:00:00`);
+        cutoff.setDate(cutoff.getDate() + 30);
+        const cutoffDate = `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, "0")}-${String(cutoff.getDate()).padStart(2, "0")}`;
+        const reminders = clients
+          .filter(client => client.dueDate <= cutoffDate && (!client.lastRemindedFor || client.lastRemindedFor !== client.dueDate))
+          .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+        const sortedClients = [...clients].sort((a, b) => a.dueDate.localeCompare(b.dueDate));
+
+        document.getElementById("reminder-count").textContent = reminders.length ? `${reminders.length}` : "нет напоминаний";
+        document.getElementById("client-count").textContent = `${clients.length}`;
+        document.getElementById("reminder-list").innerHTML = reminders.length
+          ? reminders.map(client => renderCard(client, true)).join("")
+          : '<div class="empty">Сейчас нет дат замены на ближайшие 30 дней.</div>';
+        document.getElementById("client-list").innerHTML = sortedClients.length
+          ? sortedClients.map(client => renderCard(client, false)).join("")
+          : '<div class="empty">База пока пуста. Добавьте клиента выше.</div>';
+      }
+
+      function resetForm() {
+        form.reset();
+        document.getElementById("client-id").value = "";
+        document.getElementById("form-title").textContent = "Добавить клиента";
+        document.getElementById("save-button").textContent = "Сохранить клиента";
+        document.getElementById("cancel-edit").hidden = true;
+      }
+
+      function validateImportedClients(value) {
+        if (!value || value.version !== 1 || !Array.isArray(value.clients)) {
+          throw new Error("Файл не является резервной копией R.Oil.");
+        }
+        return value.clients.map(client => {
+          if (!client || typeof client.id !== "string" || typeof client.name !== "string" ||
+              typeof client.phone !== "string" || typeof client.car !== "string" ||
+              typeof client.dueDate !== "string" || client.consent !== true ||
+              !/^\d{4}-\d{2}-\d{2}$/.test(client.dueDate)) {
+            throw new Error("В резервной копии есть запись с неверными или неполными данными.");
+          }
+          return {
+            id: client.id,
+            name: client.name,
+            phone: client.phone,
+            car: client.car,
+            dueDate: client.dueDate,
+            consent: true,
+            lastRemindedFor: typeof client.lastRemindedFor === "string" ? client.lastRemindedFor : ""
+          };
+        });
+      }
+
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (!storageReady) return;
+        if (!form.reportValidity()) return;
+
+        const id = document.getElementById("client-id").value;
+        const existing = clients.find(client => client.id === id);
+        const phone = document.getElementById("client-phone").value.trim();
+        const digits = whatsappNumber(phone);
+        if (!/^\d{10,15}$/.test(digits)) {
+          showStorageError("Проверьте номер: укажите международный номер WhatsApp, например +7 700 123 45 67.");
+          return;
+        }
+
+        const dueDate = document.getElementById("client-due").value;
+        const client = {
+          id: id || (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`),
+          name: document.getElementById("client-name").value.trim(),
+          phone,
+          car: document.getElementById("client-car").value.trim(),
+          dueDate,
+          consent: document.getElementById("client-consent").checked,
+          lastRemindedFor: existing && existing.dueDate === dueDate ? existing.lastRemindedFor || "" : ""
+        };
+        if (existing) clients = clients.map(item => item.id === id ? client : item);
+        else clients.push(client);
+
+        if (saveClients()) {
+          resetForm();
+          render();
+        }
+      });
+
+      document.getElementById("cancel-edit").addEventListener("click", resetForm);
+
+      document.addEventListener("click", event => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+        const client = clients.find(item => item.id === button.dataset.id);
+        if (!client) return;
+
+        if (button.dataset.action === "edit") {
+          document.getElementById("client-id").value = client.id;
+          document.getElementById("client-name").value = client.name;
+          document.getElementById("client-phone").value = client.phone;
+          document.getElementById("client-car").value = client.car;
+          document.getElementById("client-due").value = client.dueDate;
+          document.getElementById("client-consent").checked = client.consent === true;
+          document.getElementById("form-title").textContent = "Изменить данные клиента";
+          document.getElementById("save-button").textContent = "Сохранить изменения";
+          document.getElementById("cancel-edit").hidden = false;
+          form.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (button.dataset.action === "delete") {
+          if (!confirm(`Удалить запись клиента «${client.name}»?`)) return;
+          clients = clients.filter(item => item.id !== client.id);
+          if (saveClients()) render();
+        } else if (button.dataset.action === "sent") {
+          if (!confirm("Отметить напоминание как отправленное? Отмечайте только после отправки сообщения в WhatsApp.")) return;
+          clients = clients.map(item => item.id === client.id ? { ...item, lastRemindedFor: item.dueDate } : item);
+          if (saveClients()) render();
+        }
+      });
+
+      document.getElementById("export-button").addEventListener("click", () => {
+        if (!storageReady) return;
+        const backup = { version: 1, exportedAt: new Date().toISOString(), clients };
+        const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `R.Oil-клиенты-${localToday()}.json`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      });
+
+      document.getElementById("import-button").addEventListener("click", () => importFile.click());
+      importFile.addEventListener("change", async () => {
+        if (!storageReady) return;
+        const file = importFile.files && importFile.files[0];
+        if (!file) return;
+        try {
+          const imported = validateImportedClients(JSON.parse(await file.text()));
+          if (!confirm(`Импортировать ${imported.length} записей? Совпадающие ID будут обновлены, остальные добавлены.`)) return;
+          const byId = new Map(clients.map(client => [client.id, client]));
+          imported.forEach(client => byId.set(client.id, client));
+          const previous = clients;
+          clients = Array.from(byId.values());
+          if (saveClients()) render();
+          else clients = previous;
+        } catch (error) {
+          showStorageError(error.message);
+        } finally {
+          importFile.value = "";
+        }
+      });
+
+      clients = readClients();
+      render();
+    })();
+  </script>
+</body>
+</html>
