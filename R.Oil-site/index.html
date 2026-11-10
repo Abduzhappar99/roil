@@ -3,302 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111312">
+  <meta name="theme-color" content="#c81920">
   <meta name="description" content="R.Oil — пункт замены масла и Motul Service Center в Астане. Посмотрите на сервис и откройте карточку на карте 2ГИС.">
   <title>R.Oil — замена масла в Астане</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      --ink: #f5f4ef;
-      --muted: #b7b9b5;
-      --accent: #c9f36a;
-      --panel: #191c1a;
-      --line: rgba(255, 255, 255, .13);
-      --max: 1160px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: #111312;
-      color: var(--ink);
-      font: 16px/1.6 Inter, "Segoe UI", Arial, sans-serif;
-    }
-
-    a { color: inherit; }
-
-    .wrap {
-      width: min(var(--max), calc(100% - 48px));
-      margin-inline: auto;
-    }
-
-    .topbar {
-      position: absolute;
-      z-index: 2;
-      inset: 0 0 auto;
-      border-bottom: 1px solid rgba(255, 255, 255, .16);
-    }
-
-    .nav {
-      min-height: 82px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-    }
-
-    .brand {
-      text-decoration: none;
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: .12em;
-    }
-
-    .brand span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      color: #e1e2dd;
-      font-size: 14px;
-    }
-
-    .nav-links a { text-decoration: none; }
-    .nav-links a:hover { color: var(--accent); }
-
-    .nav-map {
-      padding: 10px 17px;
-      border: 1px solid rgba(201, 243, 106, .65);
-      border-radius: 999px;
-      color: var(--accent);
-    }
-
-    .hero {
-      min-height: 720px;
-      min-height: min(820px, 100svh);
-      display: grid;
-      align-items: center;
-      position: relative;
-      isolation: isolate;
-      background: #222 url("./images/hero.jpg") center 48% / cover no-repeat;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      z-index: -1;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(10, 12, 11, .88) 0%, rgba(10, 12, 11, .64) 48%, rgba(10, 12, 11, .18) 100%),
-        linear-gradient(0deg, rgba(10, 12, 11, .52), transparent 55%);
-    }
-
-    .hero-content { padding-top: 80px; }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 24px;
-      height: 1px;
-      background: currentColor;
-    }
-
-    h1 {
-      max-width: 760px;
-      margin: 22px 0 18px;
-      font-size: clamp(46px, 7vw, 88px);
-      line-height: .99;
-      letter-spacing: -.055em;
-    }
-
-    .hero p {
-      max-width: 520px;
-      margin: 0;
-      color: #e1e2dd;
-      font-size: clamp(17px, 2vw, 20px);
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 34px;
-    }
-
-    .button {
-      min-height: 52px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0 22px;
-      border: 1px solid transparent;
-      border-radius: 6px;
-      background: var(--accent);
-      color: #151812;
-      font-weight: 750;
-      text-decoration: none;
-      transition: transform .18s ease, background .18s ease;
-    }
-
-    .button:hover { transform: translateY(-2px); background: #d7ff83; }
-
-    .button-secondary {
-      border-color: rgba(255, 255, 255, .46);
-      background: rgba(15, 17, 16, .22);
-      color: white;
-    }
-
-    .button-secondary:hover { background: rgba(255, 255, 255, .12); }
-
-    .section { padding: 100px 0; }
-
-    .section-heading {
-      max-width: 690px;
-      margin-bottom: 36px;
-    }
-
-    .section-heading h2 {
-      margin: 14px 0 12px;
-      font-size: clamp(34px, 5vw, 54px);
-      line-height: 1.05;
-      letter-spacing: -.04em;
-    }
-
-    .section-heading p, .about-copy p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .services {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .service-card {
-      min-height: 220px;
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: linear-gradient(145deg, #1d211e, #151715);
-    }
-
-    .service-number {
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: .12em;
-    }
-
-    .service-card h3 { margin: 34px 0 8px; font-size: 21px; }
-    .service-card p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    .about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 64px;
-    }
-
-    .about-image {
-      min-height: 420px;
-      border-radius: 8px;
-      background: #242725 url("./images/interior.jpg") center / cover no-repeat;
-    }
-
-    .about-copy h2 {
-      margin: 14px 0 18px;
-      font-size: clamp(34px, 5vw, 54px);
-      line-height: 1.05;
-      letter-spacing: -.04em;
-    }
-
-    .about-copy p + p { margin-top: 14px; }
-    .about-copy .button { margin-top: 26px; }
-
-    .visit {
-      padding: 0 0 100px;
-    }
-
-    .visit-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
-      padding: 42px;
-      border: 1px solid rgba(201, 243, 106, .25);
-      border-radius: 8px;
-      background: radial-gradient(ellipse at 90% 10%, rgba(201, 243, 106, .12), transparent 42%), var(--panel);
-    }
-
-    .visit-card h2 {
-      margin: 8px 0;
-      font-size: clamp(28px, 4vw, 42px);
-      letter-spacing: -.035em;
-    }
-
-    .visit-card p { margin: 0; color: var(--muted); }
-    .visit-card .button { flex: 0 0 auto; }
-
-    footer {
-      padding: 24px 0;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .footer-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .footer-row a { color: var(--accent); text-decoration: none; }
-
-    @media (max-width: 760px) {
-      .wrap { width: min(100% - 36px, var(--max)); }
-      .nav { min-height: 70px; }
-      .nav-links { gap: 14px; }
-      .nav-links a:not(.nav-map) { display: none; }
-      .nav-map { padding: 8px 12px; }
-      .hero { min-height: 690px; min-height: 88svh; background-position: 58% center; }
-      .hero::before { background: linear-gradient(90deg, rgba(10, 12, 11, .82), rgba(10, 12, 11, .35)), linear-gradient(0deg, rgba(10, 12, 11, .5), transparent 65%); }
-      .section { padding: 72px 0; }
-      .services { grid-template-columns: 1fr; }
-      .service-card { min-height: 185px; }
-      .service-card h3 { margin-top: 22px; }
-      .about { grid-template-columns: 1fr; gap: 30px; }
-      .about-image { min-height: 300px; }
-      .visit { padding-bottom: 72px; }
-      .visit-card { align-items: flex-start; flex-direction: column; padding: 28px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <header class="topbar">
-    <nav class="nav wrap" aria-label="Основная навигация">
-      <a class="brand" href="#home" aria-label="R.Oil — на главную">R<span>.</span>OIL</a>
+  <header class="site-header site-header--overlay">
+    <nav class="site-nav wrap" aria-label="Основная навигация">
+      <a class="brand" href="./index.html" aria-label="R.Oil — на главную"><img src="./images/logo.svg" alt="R.Oil"></a>
       <div class="nav-links">
-        <a href="#services">Услуги</a>
-        <a href="#about">О сервисе</a>
+        <a href="./index.html" aria-current="page">Главная</a>
+        <a href="./about.html">О нас</a>
+        <a href="./contact.html">Контакты</a>
         <a class="nav-map" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Открыть в 2ГИС ↗</a>
       </div>
     </nav>
@@ -313,6 +30,33 @@
         <div class="actions">
           <a class="button" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Найти нас на карте <span aria-hidden="true">↗</span></a>
           <a class="button button-secondary" href="#services">Узнать больше</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section advantages-section">
+      <div class="wrap">
+        <div class="section-heading">
+          <span class="eyebrow">Почему R.Oil</span>
+          <h2>Преимущества сервиса</h2>
+          <p>Понятный сервис и нужные материалы для регулярного ухода за автомобилем.</p>
+        </div>
+        <div class="advantages">
+          <article class="advantage-card">
+            <span class="advantage-mark" aria-hidden="true">01</span>
+            <h3>Опыт в маслах</h3>
+            <p>Поможем подобрать масло с учётом рекомендаций для вашего автомобиля.</p>
+          </article>
+          <article class="advantage-card">
+            <span class="advantage-mark" aria-hidden="true">02</span>
+            <h3>Motul Service Center</h3>
+            <p>Фирменный сервисный центр и ассортимент автомобильных масел.</p>
+          </article>
+          <article class="advantage-card">
+            <span class="advantage-mark" aria-hidden="true">03</span>
+            <h3>Удобно найти</h3>
+            <p>Откройте карточку R.Oil в 2ГИС и постройте маршрут до сервиса.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -371,8 +115,16 @@
 
   <footer>
     <div class="footer-row wrap">
-      <span>© R.Oil · Пункт замены масла · Астана</span>
-      <a href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Открыть в 2ГИС ↗</a>
+      <div class="footer-brand">
+        <a class="brand" href="./index.html" aria-label="R.Oil — на главную"><img src="./images/logo.svg" alt="R.Oil"></a>
+        <span>© R.Oil · Пункт замены масла · Астана</span>
+      </div>
+      <div class="footer-links">
+        <a href="./contact.html">Контакты</a>
+        <a href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">2ГИС ↗</a>
+        <a href="https://www.instagram.com/explore/search/keyword/?q=R.Oil%20Astana">Найти в Instagram ↗</a>
+        <a href="https://vk.com/search?c[section]=communities&amp;c[q]=R.Oil%20Astana">Найти ВКонтакте ↗</a>
+      </div>
     </div>
   </footer>
 </body>
