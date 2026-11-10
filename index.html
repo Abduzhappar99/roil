@@ -3,300 +3,376 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#292333">
-  <meta name="description" content="Замена масла и технических жидкостей без лишнего ожидания. Подберём масло под ваш автомобиль и бережно обслужим его.">
-  <title>МаслоТочка — замена масла без лишних остановок</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#111312">
+  <meta name="description" content="R.Oil — пункт замены масла и Motul Service Center в Астане. Посмотрите на сервис и откройте карточку на карте 2ГИС.">
+  <title>R.Oil — замена масла в Астане</title>
   <style>
     :root {
-      color-scheme: light;
-      --ink: #292333;
-      --paper: #f5f2f7;
-      --lime: #b8e986;
-      --orange: #7952a4;
-      --muted: #777180;
-      --line: rgba(41, 35, 51, .16);
+      color-scheme: dark;
+      --ink: #f5f4ef;
+      --muted: #b7b9b5;
+      --accent: #c9f36a;
+      --panel: #191c1a;
+      --line: rgba(255, 255, 255, .13);
+      --max: 1160px;
     }
 
     * { box-sizing: border-box; }
+
     html { scroll-behavior: smooth; }
+
     body {
       margin: 0;
-      background: var(--paper);
+      background: #111312;
       color: var(--ink);
-      font-family: "Manrope", sans-serif;
-      -webkit-font-smoothing: antialiased;
+      font: 16px/1.6 Inter, "Segoe UI", Arial, sans-serif;
     }
+
     a { color: inherit; }
-    .wrap { width: min(1160px, calc(100% - 64px)); margin-inline: auto; }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: absolute;
+      z-index: 2;
+      inset: 0 0 auto;
+      border-bottom: 1px solid rgba(255, 255, 255, .16);
+    }
+
+    .nav {
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: .12em;
+    }
+
+    .brand span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: #e1e2dd;
+      font-size: 14px;
+    }
+
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-map {
+      padding: 10px 17px;
+      border: 1px solid rgba(201, 243, 106, .65);
+      border-radius: 999px;
+      color: var(--accent);
+    }
 
     .hero {
+      min-height: 720px;
+      min-height: min(820px, 100svh);
+      display: grid;
+      align-items: center;
       position: relative;
-      min-height: 620px;
-      height: 78svh;
-      max-height: 790px;
-      overflow: hidden;
-      color: #fff;
-      background: #292333 url("https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=2200&q=85") center 54% / cover no-repeat;
       isolation: isolate;
+      background: #222 url("./images/hero.jpg") center 48% / cover no-repeat;
     }
+
     .hero::before {
+      content: "";
       position: absolute;
       z-index: -1;
       inset: 0;
-      background: linear-gradient(90deg, rgba(25, 19, 34, .84) 0%, rgba(25, 19, 34, .5) 48%, rgba(25, 19, 34, .1) 100%);
-      content: "";
+      background: linear-gradient(90deg, rgba(10, 12, 11, .88) 0%, rgba(10, 12, 11, .64) 48%, rgba(10, 12, 11, .18) 100%),
+        linear-gradient(0deg, rgba(10, 12, 11, .52), transparent 55%);
     }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 86px;
-      border-bottom: 1px solid rgba(255, 255, 255, .26);
-    }
-    .brand {
+
+    .hero-content { padding-top: 80px; }
+
+    .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 11px;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
-      text-decoration: none;
-    }
-    .brand-mark {
-      display: grid;
-      width: 35px;
-      aspect-ratio: 1;
-      place-items: center;
-      background: var(--lime);
-      color: var(--ink);
-      font-family: "Oswald", sans-serif;
-      font-size: 23px;
-      line-height: 1;
-    }
-    .topbar-note {
-      color: rgba(255, 255, 255, .78);
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .hero-content {
-      display: flex;
-      min-height: calc(100% - 87px);
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding-block: 74px 96px;
-    }
-    .eyebrow {
-      display: flex;
-      align-items: center;
       gap: 10px;
-      margin: 0 0 21px;
-      color: var(--lime);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
       text-transform: uppercase;
     }
-    .eyebrow::before { width: 25px; height: 2px; background: currentColor; content: ""; }
+
+    .eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 1px;
+      background: currentColor;
+    }
+
     h1 {
       max-width: 760px;
+      margin: 22px 0 18px;
+      font-size: clamp(46px, 7vw, 88px);
+      line-height: .99;
+      letter-spacing: -.055em;
+    }
+
+    .hero p {
+      max-width: 520px;
       margin: 0;
-      font-family: "Oswald", sans-serif;
-      font-size: clamp(56px, 8.3vw, 108px);
-      font-weight: 600;
-      letter-spacing: 0;
-      line-height: .98;
-      text-transform: uppercase;
+      color: #e1e2dd;
+      font-size: clamp(17px, 2vw, 20px);
     }
-    h1 span { color: var(--lime); }
-    .hero-copy {
-      max-width: 440px;
-      margin: 25px 0 29px;
-      color: rgba(255, 255, 255, .82);
-      font-size: 15px;
-      line-height: 1.7;
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
     }
-    .action-link {
+
+    .button {
+      min-height: 52px;
       display: inline-flex;
-      min-height: 54px;
       align-items: center;
       justify-content: center;
-      gap: 13px;
+      gap: 10px;
       padding: 0 22px;
-      background: var(--lime);
-      color: var(--ink);
-      font-size: 13px;
-      font-weight: 800;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #151812;
+      font-weight: 750;
       text-decoration: none;
-      transition: background-color .18s ease, transform .18s ease;
+      transition: transform .18s ease, background .18s ease;
     }
-    .action-link:hover { transform: translateY(-2px); background: #cdf6a7; }
-    .action-link:focus-visible, a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
-    .action-link svg { width: 19px; height: 19px; }
-    .hero-stamp {
-      position: absolute;
-      right: max(32px, calc((100vw - 1160px) / 2));
-      bottom: 38px;
+
+    .button:hover { transform: translateY(-2px); background: #d7ff83; }
+
+    .button-secondary {
+      border-color: rgba(255, 255, 255, .46);
+      background: rgba(15, 17, 16, .22);
+      color: white;
+    }
+
+    .button-secondary:hover { background: rgba(255, 255, 255, .12); }
+
+    .section { padding: 100px 0; }
+
+    .section-heading {
+      max-width: 690px;
+      margin-bottom: 36px;
+    }
+
+    .section-heading h2 {
+      margin: 14px 0 12px;
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .section-heading p, .about-copy p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .service-card {
+      min-height: 220px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(145deg, #1d211e, #151715);
+    }
+
+    .service-number {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .12em;
+    }
+
+    .service-card h3 { margin: 34px 0 8px; font-size: 21px; }
+    .service-card p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 64px;
+    }
+
+    .about-image {
+      min-height: 420px;
+      border-radius: 8px;
+      background: #242725 url("./images/interior.jpg") center / cover no-repeat;
+    }
+
+    .about-copy h2 {
+      margin: 14px 0 18px;
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+
+    .about-copy p + p { margin-top: 14px; }
+    .about-copy .button { margin-top: 26px; }
+
+    .visit {
+      padding: 0 0 100px;
+    }
+
+    .visit-card {
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 700;
-    }
-    .hero-stamp::before { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); content: ""; }
-
-    .services { padding: 66px 0 74px; }
-    .section-heading {
-      display: flex;
-      align-items: end;
       justify-content: space-between;
-      gap: 30px;
-      margin-bottom: 34px;
-    }
-    .section-heading p { margin: 0 0 6px; color: var(--orange); font-size: 11px; font-weight: 800; text-transform: uppercase; }
-    h2 {
-      margin: 0;
-      font-family: "Oswald", sans-serif;
-      font-size: clamp(34px, 4vw, 48px);
-      font-weight: 600;
-      letter-spacing: 0;
-      line-height: 1.08;
-      text-transform: uppercase;
-    }
-    .section-note { max-width: 310px; margin: 0 0 4px; color: var(--muted); font-size: 13px; line-height: 1.65; }
-    .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .service {
-      min-height: 195px;
-      padding: 24px;
-      border: 1px solid rgba(121, 82, 164, .12);
+      gap: 28px;
+      padding: 42px;
+      border: 1px solid rgba(201, 243, 106, .25);
       border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 5px 16px rgba(48, 34, 65, .07);
-      transition: box-shadow .25s ease, transform .25s ease;
+      background: radial-gradient(ellipse at 90% 10%, rgba(201, 243, 106, .12), transparent 42%), var(--panel);
     }
-    .service:hover { transform: translateY(-4px); box-shadow: 0 13px 28px rgba(48, 34, 65, .14); }
-    .service-number { color: var(--orange); font-family: "Oswald", sans-serif; font-size: 15px; }
-    .service h3 { margin: 22px 0 8px; font-size: 17px; font-weight: 800; }
-    .service p { max-width: 290px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
 
-    footer { background: var(--ink); color: #fff; }
-    .footer-inner {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr 1fr;
-      gap: 32px;
-      padding-block: 30px;
+    .visit-card h2 {
+      margin: 8px 0;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -.035em;
     }
-    .footer-label { display: block; margin-bottom: 8px; color: #aab0a6; font-size: 10px; font-weight: 700; text-transform: uppercase; }
-    .footer-value { font-size: 13px; font-weight: 700; line-height: 1.55; text-decoration: none; }
-    .footer-value:hover { color: var(--lime); }
-    .copyright { padding: 13px 0 18px; border-top: 1px solid rgba(255, 255, 255, .16); color: #aab0a6; font-size: 10px; }
 
-    @media (max-width: 700px) {
-      .wrap { width: min(100% - 40px, 520px); }
-      .hero { min-height: 600px; height: 82svh; max-height: 740px; background-position: 58% center; }
-      .hero::before { background: linear-gradient(90deg, rgba(25, 19, 34, .86), rgba(25, 19, 34, .52)); }
-      .topbar { min-height: 72px; }
-      .topbar-note { max-width: 130px; font-size: 10px; text-align: right; }
-      .hero-content { min-height: calc(100% - 73px); padding-block: 66px 80px; }
-      h1 { font-size: clamp(55px, 13vw, 82px); }
-      .hero-copy { max-width: 360px; font-size: 14px; }
-      .hero-stamp { right: 20px; bottom: 23px; font-size: 10px; }
-      .services { padding: 48px 0 52px; }
-      .section-heading { align-items: flex-start; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-      .section-note { max-width: 380px; }
-      .service-grid { grid-template-columns: 1fr; }
-      .service { min-height: 0; padding: 19px; }
-      .service h3 { margin: 10px 0 5px; }
-      .service p { max-width: 420px; }
-      .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px 18px; padding-block: 25px; }
-      .footer-inner > :first-child { grid-column: 1 / -1; }
+    .visit-card p { margin: 0; color: var(--muted); }
+    .visit-card .button { flex: 0 0 auto; }
+
+    footer {
+      padding: 24px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
     }
-    @media (max-width: 360px) {
-      .topbar-note { max-width: 96px; font-size: 9px; }
-      .footer-inner { grid-template-columns: 1fr; gap: 18px; }
-      .footer-inner > :first-child { grid-column: auto; }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
     }
+
+    .footer-row a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 36px, var(--max)); }
+      .nav { min-height: 70px; }
+      .nav-links { gap: 14px; }
+      .nav-links a:not(.nav-map) { display: none; }
+      .nav-map { padding: 8px 12px; }
+      .hero { min-height: 690px; min-height: 88svh; background-position: 58% center; }
+      .hero::before { background: linear-gradient(90deg, rgba(10, 12, 11, .82), rgba(10, 12, 11, .35)), linear-gradient(0deg, rgba(10, 12, 11, .5), transparent 65%); }
+      .section { padding: 72px 0; }
+      .services { grid-template-columns: 1fr; }
+      .service-card { min-height: 185px; }
+      .service-card h3 { margin-top: 22px; }
+      .about { grid-template-columns: 1fr; gap: 30px; }
+      .about-image { min-height: 300px; }
+      .visit { padding-bottom: 72px; }
+      .visit-card { align-items: flex-start; flex-direction: column; padding: 28px; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Основная навигация">
+      <a class="brand" href="#home" aria-label="R.Oil — на главную">R<span>.</span>OIL</a>
+      <div class="nav-links">
+        <a href="#services">Услуги</a>
+        <a href="#about">О сервисе</a>
+        <a class="nav-map" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Открыть в 2ГИС ↗</a>
+      </div>
+    </nav>
+  </header>
+
   <main>
-    <section class="hero" aria-labelledby="page-title">
-      <div class="wrap">
-        <header class="topbar">
-          <a class="brand" href="#top" aria-label="МаслоТочка — на главную">
-            <span class="brand-mark" aria-hidden="true">М</span>
-            <span>МАСЛОТОЧКА</span>
-          </a>
-          <span class="topbar-note">Замена масла без лишних остановок</span>
-        </header>
-        <div class="hero-content" id="top">
-          <p class="eyebrow">Сервис быстрой замены масла</p>
-          <h1 id="page-title">Машина<br>скажет <span>спасибо</span></h1>
-          <p class="hero-copy">Подберём масло под ваш автомобиль и заменим его аккуратно. Заезжайте по записи или напишите нам прямо сейчас.</p>
-          <a class="action-link" href="https://wa.me/79000000000?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%BD%D0%B0%20%D0%B7%D0%B0%D0%BC%D0%B5%D0%BD%D1%83%20%D0%BC%D0%B0%D1%81%D0%BB%D0%B0."
-            target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 11.7a8.3 8.3 0 0 1-12.3 7.2L3.5 20l1.2-4.5a8.3 8.3 0 1 1 15.8-3.8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.7 8.1c.2-.5.4-.5.7-.5h.5c.2 0 .4.1.5.4l.7 1.7c.1.2.1.4-.1.6l-.5.6c-.2.2-.2.4 0 .6.4.7 1 1.3 1.7 1.7.2.1.4.1.6-.1l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.4.2.4.4 0 .3-.2 1.2-.7 1.6-.4.4-1 .6-1.6.5-1-.1-2.2-.7-3.4-1.7-1-.9-1.7-2-2-3-.3-.8-.1-1.6.4-2.2Z" fill="currentColor"/></svg>
-            Написать в WhatsApp
-          </a>
+    <section class="hero" id="home">
+      <div class="hero-content wrap">
+        <span class="eyebrow">Motul Service Center · Астана</span>
+        <h1>Забота о моторе начинается здесь</h1>
+        <p>R.Oil — пункт замены масла. Подберём подходящее масло и поможем позаботиться о вашем автомобиле.</p>
+        <div class="actions">
+          <a class="button" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Найти нас на карте <span aria-hidden="true">↗</span></a>
+          <a class="button button-secondary" href="#services">Узнать больше</a>
         </div>
       </div>
-      <div class="hero-stamp">Работаем ежедневно · 09:00–21:00</div>
     </section>
 
-    <section class="services" aria-labelledby="services-title">
+    <section class="section" id="services">
       <div class="wrap">
         <div class="section-heading">
-          <div>
-            <p>Понятный сервис, честный подход</p>
-            <h2 id="services-title">Всё по делу</h2>
-          </div>
-          <p class="section-note">Только нужные работы, внимательное отношение к автомобилю и никаких сюрпризов в счёте.</p>
+          <span class="eyebrow">Сервис R.Oil</span>
+          <h2>Всё необходимое для замены масла</h2>
+          <p>Помогаем выбрать подходящие материалы и выполнить регулярное обслуживание автомобиля.</p>
         </div>
-        <div class="service-grid">
-          <article class="service">
-            <span class="service-number">01 / ПОДБОР</span>
-            <h3>Масло под ваш мотор</h3>
-            <p>Поможем выбрать вязкость и допуск по рекомендациям производителя.</p>
+        <div class="services">
+          <article class="service-card">
+            <span class="service-number">01 / СЕРВИС</span>
+            <h3>Замена масла</h3>
+            <p>Замена моторного масла в пункте обслуживания R.Oil.</p>
           </article>
-          <article class="service">
-            <span class="service-number">02 / ЗАМЕНА</span>
-            <h3>Быстро и аккуратно</h3>
-            <p>Заменим масло и фильтр, проверим уровень и напомним о следующем визите.</p>
+          <article class="service-card">
+            <span class="service-number">02 / ПОДБОР</span>
+            <h3>Подбор масла</h3>
+            <p>Помощь с выбором масла с учётом рекомендаций для автомобиля.</p>
           </article>
-          <article class="service">
-            <span class="service-number">03 / ЗАБОТА</span>
-            <h3>Без лишних услуг</h3>
-            <p>Согласуем стоимость до начала работ. Вы решаете, что действительно нужно.</p>
+          <article class="service-card">
+            <span class="service-number">03 / ВЫБОР</span>
+            <h3>Масла и фильтры</h3>
+            <p>Ассортимент автомобильных масел и расходных материалов в сервисе.</p>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="about wrap">
+        <div class="about-image" role="img" aria-label="Интерьер магазина R.Oil с автомобильными маслами"></div>
+        <div class="about-copy">
+          <span class="eyebrow">R.Oil · Астана</span>
+          <h2>Место, где знают толк в масле</h2>
+          <p>R.Oil — пункт замены масла и Motul Service Center. Здесь можно обратиться за заменой и подбором масла для автомобиля.</p>
+          <p>Перед визитом откройте карточку организации в 2ГИС, чтобы посмотреть расположение и актуальную информацию.</p>
+          <a class="button" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Карточка R.Oil в 2ГИС ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="visit" id="map">
+      <div class="visit-card wrap">
+        <div>
+          <span class="eyebrow">Мы на карте</span>
+          <h2>Заезжайте в R.Oil</h2>
+          <p>Маршрут, расположение и подробности — в карточке организации на 2ГИС.</p>
+        </div>
+        <a class="button" href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Открыть карту 2ГИС ↗</a>
       </div>
     </section>
   </main>
 
-  <footer id="contacts">
-    <div class="wrap">
-      <div class="footer-inner">
-        <div>
-          <span class="footer-label">Адрес</span>
-          <span class="footer-value">ул. Автомобильная, 12<br>Ваш город</span>
-        </div>
-        <div>
-          <span class="footer-label">Телефон и WhatsApp</span>
-          <a class="footer-value" href="https://wa.me/79000000000">+7 (900) 000-00-00</a>
-        </div>
-        <div>
-          <span class="footer-label">Часы работы</span>
-          <span class="footer-value">Ежедневно<br>09:00–21:00</span>
-        </div>
-      </div>
-      <div class="copyright">© 2026 МаслоТочка</div>
+  <footer>
+    <div class="footer-row wrap">
+      <span>© R.Oil · Пункт замены масла · Астана</span>
+      <a href="https://2gis.kz/astana/firm/70000001112435257?m=71.511894%2C51.139861%2F18.81">Открыть в 2ГИС ↗</a>
     </div>
   </footer>
 </body>
